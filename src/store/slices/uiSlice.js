@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isTaskFormOpen: false,
@@ -9,36 +9,36 @@ const initialState = {
 };
 
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState,
   reducers: {
     openTaskForm: (state) => {
       state.isTaskFormOpen = true;
       state.editingTask = null;
     },
-    
+
     closeTaskForm: (state) => {
       state.isTaskFormOpen = false;
       state.editingTask = null;
     },
-    
+
     editTask: (state, action) => {
       state.editingTask = action.payload;
       state.isTaskFormOpen = true;
     },
-    
+
     openDeleteConfirm: (state, action) => {
       state.deleteConfirmModal = action.payload;
     },
-    
+
     closeDeleteConfirm: (state) => {
       state.deleteConfirmModal = null;
     },
-    
+
     toggleFolderForm: (state) => {
       state.isFolderFormOpen = !state.isFolderFormOpen;
     },
-    
+
     toggleSidebar: (state) => {
       state.sidebarOpen = !state.sidebarOpen;
     },

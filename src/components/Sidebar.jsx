@@ -76,7 +76,6 @@ const Sidebar = () => {
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
         className="w-80 bg-white border-r-2 border-blue-400 flex flex-col h-full"
       >
-        {/* Header */}
         <div className="p-6 border-b-2 border-blue-400 bg-gradient-to-r from-blue-50 to-purple-50 rounded-tr-2xl shadow-sm">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
@@ -97,7 +96,6 @@ const Sidebar = () => {
             </motion.button>
           </div>
 
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
@@ -110,7 +108,6 @@ const Sidebar = () => {
             />
           </div>
 
-          {/* Active Filters */}
           {(searchTerm || selectedTags.length > 0 || selectedFolder) && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
@@ -170,9 +167,7 @@ const Sidebar = () => {
           )}
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 overflow-y-auto">
-          {/* Stats */}
           <div className="p-4 border-b border-blue-400 bg-white">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-400 shadow-sm">
@@ -194,7 +189,6 @@ const Sidebar = () => {
             </div>
           </div>
 
-          {/* Folders */}
           <div className="p-4 border-b border-blue-400">
             <div className="flex items-center justify-between mb-3">
               <motion.button
@@ -270,7 +264,6 @@ const Sidebar = () => {
             </AnimatePresence>
           </div>
 
-          {/* Tags */}
           {allTags.length > 0 && (
             <div className="p-4">
               <motion.button

@@ -36,13 +36,9 @@ const MainContent = () => {
 
   return (
     <div className="flex-1 flex flex-col bg-gray-50">
-      {/* --- Header --- */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b-2 border-blue-400 px-6 py-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        {/* Left Section */}
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
           <div className="flex items-center gap-2 ml-4">
-            {" "}
-            {/* added ml-2 here */}
             <FolderIcon className="w-7 h-7 text-blue-600" />
             <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               {currentFolder.name}
@@ -62,7 +58,6 @@ const MainContent = () => {
           </div>
         </div>
 
-        {/* Right Section */}
         <div>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -76,7 +71,6 @@ const MainContent = () => {
         </div>
       </div>
 
-      {/* Task List */}
       <div className="flex-1 overflow-hidden">
         <TaskList tasks={filteredTasks} />
       </div>

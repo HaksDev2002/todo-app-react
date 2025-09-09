@@ -8,7 +8,6 @@ const initialState = {
   selectedFolder: null,
 };
 
-// Load tasks from localStorage
 const loadTasksFromStorage = () => {
   try {
     const savedTasks = localStorage.getItem("todoTasks");
@@ -19,11 +18,9 @@ const loadTasksFromStorage = () => {
   }
 };
 
-// Save tasks to localStorage
 const saveTasksToStorage = (tasks) => {
   try {
     localStorage.setItem("todoTasks", JSON.stringify(tasks));
-    // Broadcast changes to other tabs
     window.dispatchEvent(new CustomEvent("tasksUpdated", { detail: tasks }));
   } catch (error) {
     console.error("Error saving tasks to localStorage:", error);
@@ -67,7 +64,6 @@ const tasksSlice = createSlice({
 
     deleteTask: (state, action) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload);
-      // Reorder remaining tasks
       state.tasks.forEach((task, index) => {
         task.order = index;
       });
@@ -80,7 +76,6 @@ const tasksSlice = createSlice({
       state.tasks.splice(dragIndex, 1);
       state.tasks.splice(hoverIndex, 0, draggedTask);
 
-      // Update order for all tasks
       state.tasks.forEach((task, index) => {
         task.order = index;
       });

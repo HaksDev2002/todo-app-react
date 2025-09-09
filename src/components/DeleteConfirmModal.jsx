@@ -1,13 +1,12 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, X } from 'lucide-react';
-import { deleteTask } from '../store/slices/tasksSlice';
-import { closeDeleteConfirm } from '../store/slices/uiSlice';
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertTriangle } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTask } from "../store/slices/tasksSlice";
+import { closeDeleteConfirm } from "../store/slices/uiSlice";
 
 const DeleteConfirmModal = () => {
   const dispatch = useDispatch();
-  const { deleteConfirmModal } = useSelector(state => state.ui);
+  const { deleteConfirmModal } = useSelector((state) => state.ui);
 
   const handleConfirm = () => {
     if (deleteConfirmModal) {
@@ -43,15 +42,20 @@ const DeleteConfirmModal = () => {
                   Delete Task
                 </h3>
                 <p className="text-gray-600 mt-1">
-                  Are you sure you want to delete this task? This action cannot be undone.
+                  Are you sure you want to delete this task? This action cannot
+                  be undone.
                 </p>
               </div>
             </div>
 
             <div className="bg-gray-50 p-3 rounded-lg mb-4">
-              <p className="font-medium text-gray-900">{deleteConfirmModal.title}</p>
+              <p className="font-medium text-gray-900">
+                {deleteConfirmModal.title}
+              </p>
               {deleteConfirmModal.description && (
-                <p className="text-gray-600 text-sm mt-1">{deleteConfirmModal.description}</p>
+                <p className="text-gray-600 text-sm mt-1">
+                  {deleteConfirmModal.description}
+                </p>
               )}
             </div>
 

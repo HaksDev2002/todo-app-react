@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import { X, Folder } from "lucide-react";
+import { Folder, X } from "lucide-react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addFolder } from "../store/slices/foldersSlice";
 import { toggleFolderForm } from "../store/slices/uiSlice";
 
@@ -9,20 +9,18 @@ const FolderForm = () => {
   const dispatch = useDispatch();
   const { folders } = useSelector((state) => state.folders);
   const [name, setName] = useState("");
-  const [selectedColor, setSelectedColor] = useState("#6366f1"); // default color
+  const [selectedColor, setSelectedColor] = useState("#6366f1");
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedName = name.trim();
 
-    // ✅ Validation: empty name
     if (!trimmedName) {
       setError("Folder name is required");
       return;
     }
 
-    // ✅ Validation: duplicate folder
     if (
       folders.some((f) => f.name.toLowerCase() === trimmedName.toLowerCase())
     ) {
@@ -67,7 +65,6 @@ const FolderForm = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Folder Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Folder Name *
@@ -90,10 +87,9 @@ const FolderForm = () => {
               )}
             </div>
 
-            {/* Color Picker */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Color
+                Set Color
               </label>
               <input
                 type="color"
@@ -103,7 +99,6 @@ const FolderForm = () => {
               />
             </div>
 
-            {/* Buttons */}
             <div className="flex gap-3 pt-4">
               <button
                 type="button"
