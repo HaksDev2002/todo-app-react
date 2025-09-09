@@ -18,10 +18,14 @@ const TaskForm = () => {
   const dispatch = useDispatch();
   const { isTaskFormOpen, editingTask } = useSelector((state) => state.ui);
   const { folders } = useSelector((state) => state.folders);
-  const { selectedFolder } = useSelector((state) => state.tasks);
+  const { selectedFolder, tasks } = useSelector((state) => state.tasks);
 
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
+  const [tagError, setTagError] = useState("");
+
+  // ✅ Get all existing tags in the project
+  const allExistingTags = [...new Set(tasks.flatMap((task) => task.tags))];
 
   useEffect(() => {
     if (editingTask) {
@@ -30,18 +34,38 @@ const TaskForm = () => {
       setTags([]);
     }
     setTagInput("");
+    setTagError("");
   }, [editingTask, isTaskFormOpen]);
 
   if (!isTaskFormOpen) return null;
 
-  // ✅ Add tag function
+  // ✅ Add tag function with global duplicate check
   const handleAddTag = (e) => {
     e.preventDefault();
     const tag = tagInput.trim();
-    if (tag && !tags.includes(tag)) {
-      setTags([...tags, tag]);
-      setTagInput("");
+
+    // ✅ Validation: empty
+    if (!tag) {
+      setTagError("Tag cannot be empty");
+      return;
     }
+
+    // ✅ Validation: duplicate in current task or all tasks
+    const tagExistsInCurrent = tags.some(
+      (t) => t.toLowerCase() === tag.toLowerCase()
+    );
+    const tagExistsGlobally = allExistingTags.some(
+      (t) => t.toLowerCase() === tag.toLowerCase()
+    );
+
+    if (tagExistsInCurrent || (!editingTask && tagExistsGlobally)) {
+      setTagError("Tag already exists in project");
+      return;
+    }
+
+    setTags([...tags, tag]);
+    setTagInput("");
+    setTagError("");
   };
 
   // ✅ Remove tag
@@ -72,7 +96,7 @@ const TaskForm = () => {
               </button>
             </div>
 
-            {/* ✅ Formik Form */}
+            {/* Formik Form */}
             <Formik
               initialValues={{
                 title: editingTask?.title || "",
@@ -164,7 +188,10 @@ const TaskForm = () => {
                       <input
                         type="text"
                         value={tagInput}
-                        onChange={(e) => setTagInput(e.target.value)}
+                        onChange={(e) => {
+                          setTagInput(e.target.value);
+                          setTagError("");
+                        }}
                         onKeyPress={(e) => e.key === "Enter" && handleAddTag(e)}
                         className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Add tag..."
@@ -177,6 +204,12 @@ const TaskForm = () => {
                         <Plus className="w-4 h-4" />
                       </button>
                     </div>
+
+                    {tagError && (
+                      <div className="text-red-500 text-sm mb-2">
+                        {tagError}
+                      </div>
+                    )}
 
                     {tags.length > 0 && (
                       <div className="flex flex-wrap gap-2">
