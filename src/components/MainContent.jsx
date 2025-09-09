@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Filter, Folder as FolderIcon, Plus, Tag } from "lucide-react";
+import { Filter, Folder as FolderIcon, Plus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { openTaskForm } from "../store/slices/uiSlice";
 import TaskList from "./TaskList";
@@ -11,7 +11,6 @@ const MainContent = () => {
   );
   const { folders } = useSelector((state) => state.folders);
 
-  // Filter tasks based on search, tags, and folder
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
       !searchTerm ||
@@ -37,21 +36,25 @@ const MainContent = () => {
 
   return (
     <div className="flex-1 flex flex-col bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div className="flex flex-col md:flex-row md:items-center md:gap-4">
-          <div className="flex items-center gap-2">
-            <FolderIcon className="w-5 h-5 text-blue-500" />
-            <h2 className="text-2xl font-bold text-gray-900">
+      {/* --- Header --- */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-b-2 border-blue-400 px-6 py-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        {/* Left Section */}
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
+          <div className="flex items-center gap-2 ml-4">
+            {" "}
+            {/* added ml-2 here */}
+            <FolderIcon className="w-7 h-7 text-blue-600" />
+            <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
               {currentFolder.name}
             </h2>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600 mt-1 md:mt-0">
-            <span>
+
+          <div className="flex items-center gap-3 text-sm text-gray-700">
+            <span className="font-medium">
               {filteredTasks.length} task{filteredTasks.length !== 1 ? "s" : ""}
             </span>
             {(searchTerm || selectedTags.length > 0) && (
-              <div className="flex items-center gap-1 text-blue-600 font-medium">
+              <div className="flex items-center gap-1 text-blue-700 font-medium bg-white border border-blue-200 px-2 py-0.5 rounded-md shadow-sm">
                 <Filter className="w-4 h-4" />
                 <span>Filtered</span>
               </div>
@@ -59,27 +62,13 @@ const MainContent = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Active Tags */}
-          {selectedTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {selectedTags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-purple-100 text-purple-700 px-2 py-1 text-xs rounded-full flex items-center gap-1"
-                >
-                  <Tag className="w-3 h-3" /> {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Add Task Button */}
+        {/* Right Section */}
+        <div>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => dispatch(openTaskForm())}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors shadow-md"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:opacity-90 text-white px-5 py-2 rounded-lg font-semibold flex items-center gap-2 shadow-lg transition"
           >
             <Plus className="w-4 h-4" />
             Add Task

@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, Hash } from "lucide-react";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import { AnimatePresence, motion } from "framer-motion";
+import { Hash, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
 import { addTask, updateTask } from "../store/slices/tasksSlice";
 import { closeTaskForm } from "../store/slices/uiSlice";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 
-// ✅ Validation schema with Yup
 const TaskSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   description: Yup.string(),
@@ -24,7 +23,6 @@ const TaskForm = () => {
   const [tags, setTags] = useState([]);
   const [tagError, setTagError] = useState("");
 
-  // ✅ Get all existing tags in the project
   const allExistingTags = [...new Set(tasks.flatMap((task) => task.tags))];
 
   useEffect(() => {
@@ -39,18 +37,15 @@ const TaskForm = () => {
 
   if (!isTaskFormOpen) return null;
 
-  // ✅ Add tag function with global duplicate check
   const handleAddTag = (e) => {
     e.preventDefault();
     const tag = tagInput.trim();
 
-    // ✅ Validation: empty
     if (!tag) {
       setTagError("Tag cannot be empty");
       return;
     }
 
-    // ✅ Validation: duplicate in current task or all tasks
     const tagExistsInCurrent = tags.some(
       (t) => t.toLowerCase() === tag.toLowerCase()
     );
@@ -68,7 +63,6 @@ const TaskForm = () => {
     setTagError("");
   };
 
-  // ✅ Remove tag
   const handleRemoveTag = (tagToRemove) => {
     setTags(tags.filter((t) => t !== tagToRemove));
   };
@@ -83,7 +77,6 @@ const TaskForm = () => {
           className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
         >
           <div className="p-6">
-            {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-800">
                 {editingTask ? "Edit Task" : "Add New Task"}
@@ -96,7 +89,6 @@ const TaskForm = () => {
               </button>
             </div>
 
-            {/* Formik Form */}
             <Formik
               initialValues={{
                 title: editingTask?.title || "",
@@ -126,7 +118,6 @@ const TaskForm = () => {
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-5">
-                  {/* Title */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Title *
@@ -144,7 +135,6 @@ const TaskForm = () => {
                     />
                   </div>
 
-                  {/* Description */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Description
@@ -158,7 +148,6 @@ const TaskForm = () => {
                     />
                   </div>
 
-                  {/* Folder Dropdown */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Folder
@@ -179,7 +168,6 @@ const TaskForm = () => {
                     </Field>
                   </div>
 
-                  {/* Tags */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Tags
@@ -235,7 +223,6 @@ const TaskForm = () => {
                     )}
                   </div>
 
-                  {/* Buttons */}
                   <div className="flex gap-4 pt-4">
                     <button
                       type="button"

@@ -1,9 +1,8 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
-import { Edit, Trash2, GripVertical, Hash, Calendar } from "lucide-react";
+import { Calendar, Edit, GripVertical, Hash, Trash2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { editTask, openDeleteConfirm } from "../store/slices/uiSlice";
 
 const TaskItem = ({ task, index }) => {
@@ -54,7 +53,6 @@ const TaskItem = ({ task, index }) => {
       }`}
     >
       <div className="flex items-start gap-3">
-        {/* Drag Handle */}
         <div
           {...attributes}
           {...listeners}
@@ -63,7 +61,6 @@ const TaskItem = ({ task, index }) => {
           <GripVertical className="w-4 h-4 text-gray-400" />
         </div>
 
-        {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -77,7 +74,6 @@ const TaskItem = ({ task, index }) => {
               )}
             </div>
 
-            {/* Actions */}
             <div className="flex items-center gap-1 ml-2">
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -100,10 +96,8 @@ const TaskItem = ({ task, index }) => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex items-center justify-between mt-3">
             <div className="flex items-center gap-3">
-              {/* Tags */}
               {task.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {task.tags.map((tag) => (
@@ -118,7 +112,6 @@ const TaskItem = ({ task, index }) => {
                 </div>
               )}
 
-              {/* Folder */}
               {taskFolder && taskFolder.id !== "default" && (
                 <div className="flex items-center">
                   <div
@@ -132,7 +125,6 @@ const TaskItem = ({ task, index }) => {
               )}
             </div>
 
-            {/* Date */}
             <div className="flex items-center text-xs text-gray-500">
               <Calendar className="w-3 h-3 mr-1" />
               {formatDate(task.createdAt)}

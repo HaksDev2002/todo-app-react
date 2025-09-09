@@ -1,29 +1,24 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import {
-  DndContext,
   closestCenter,
+  DndContext,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import { motion } from 'framer-motion';
-import { syncTasks, reorderTasks } from '../store/slices/tasksSlice';
-import Sidebar from './Sidebar';
-import MainContent from './MainContent';
-import TaskForm from './TaskForm';
-import DeleteConfirmModal from './DeleteConfirmModal';
+} from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { reorderTasks, syncTasks } from "../store/slices/tasksSlice";
+import DeleteConfirmModal from "./DeleteConfirmModal";
+import MainContent from "./MainContent";
+import Sidebar from "./Sidebar";
+import TaskForm from "./TaskForm";
 
 const TodoApp = () => {
   const dispatch = useDispatch();
-  
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -32,46 +27,45 @@ const TodoApp = () => {
   );
 
   useEffect(() => {
-    // Listen for storage changes from other tabs
     const handleStorageChange = (e) => {
-      if (e.key === 'todoTasks') {
+      if (e.key === "todoTasks") {
         try {
-          const updatedTasks = JSON.parse(e.newValue || '[]');
+          const updatedTasks = JSON.parse(e.newValue || "[]");
           dispatch(syncTasks(updatedTasks));
         } catch (error) {
-          console.error('Error syncing tasks from storage:', error);
+          console.error("Error syncing tasks from storage:", error);
         }
       }
     };
 
-    // Listen for custom events from other tabs
     const handleTasksUpdated = (e) => {
       dispatch(syncTasks(e.detail));
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('tasksUpdated', handleTasksUpdated);
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("tasksUpdated", handleTasksUpdated);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('tasksUpdated', handleTasksUpdated);
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("tasksUpdated", handleTasksUpdated);
     };
   }, [dispatch]);
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    
+
     if (!over || active.id === over.id) return;
 
-    // Find the indices of the dragged item and drop target
-    const activeIndex = parseInt(active.id.split('-')[1]);
-    const overIndex = parseInt(over.id.split('-')[1]);
-    
+    const activeIndex = parseInt(active.id.split("-")[1]);
+    const overIndex = parseInt(over.id.split("-")[1]);
+
     if (activeIndex !== overIndex) {
-      dispatch(reorderTasks({
-        dragIndex: activeIndex,
-        hoverIndex: overIndex,
-      }));
+      dispatch(
+        reorderTasks({
+          dragIndex: activeIndex,
+          hoverIndex: overIndex,
+        })
+      );
     }
   };
 
@@ -90,7 +84,7 @@ const TodoApp = () => {
         <Sidebar />
         <MainContent />
       </DndContext>
-      
+
       <TaskForm />
       <DeleteConfirmModal />
     </motion.div>

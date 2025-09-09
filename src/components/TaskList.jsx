@@ -1,11 +1,10 @@
-import React from "react";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { motion, AnimatePresence } from "framer-motion";
-import TaskItem from "./TaskItem";
+import { AnimatePresence, motion } from "framer-motion";
 import EmptyState from "./EmptyState";
+import TaskItem from "./TaskItem";
 
 const TaskList = ({ tasks }) => {
   const sortedTasks = [...tasks].sort((a, b) => a.order - b.order);
@@ -18,7 +17,6 @@ const TaskList = ({ tasks }) => {
   return (
     <div className="p-6 h-full overflow-y-auto">
       <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-        {/* Vertical scroll container */}
         <div className="space-y-4">
           <AnimatePresence>
             {sortedTasks.map((task, index) => (
